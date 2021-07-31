@@ -2,8 +2,14 @@ from flask import Flask, redirect, request
 import requests
 import playsound
 import threading
+import pygame
+pygame.mixer.init()
 
 app = Flask(__name__)
+
+def play(filename):
+    pygame.mixer.music.load(filename)
+    pygame.mixer.music.play()
 
 @app.route('/api/upload', methods=['POST'])
 def upload():
@@ -19,9 +25,9 @@ def upload():
     return 'OK'
 
 @app.route('/api/play', methods=['POST'])
-def play():
+def play2():
     filename = dict(request.form)['filename']
-    threading.Thread(target=playsound.playsound, args=[filename]).start()
+    threading.Thread(target=play, args=[filename]).start()
 
 
 if __name__ == '__main__':
