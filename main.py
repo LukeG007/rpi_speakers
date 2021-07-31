@@ -21,7 +21,7 @@ def upload():
 @app.route('/api/play', methods=['POST'])
 def play():
     filename = dict(request.form)['filename']
-    threading.Thread(target=playsound.playsound, args=[filename])
+    threading.Thread(target=playsound.playsound, args=[filename]).start()
 
 
 if __name__ == '__main__':
