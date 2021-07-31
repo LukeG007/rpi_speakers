@@ -2,14 +2,9 @@ from flask import Flask, redirect, request
 import requests
 import playsound
 import threading
-import pygame
-pygame.mixer.init()
+import subprocess
 
 app = Flask(__name__)
-
-def play(filename):
-    pygame.mixer.music.load(filename)
-    pygame.mixer.music.play()
 
 @app.route('/api/upload', methods=['POST'])
 def upload():
@@ -27,7 +22,7 @@ def upload():
 @app.route('/api/play', methods=['POST'])
 def play2():
     filename = dict(request.form)['filename']
-    threading.Thread(target=play, args=[filename]).start()
+    threading.Thread(target=subprocess.Popen, args=['aplay', filename]]).start()
 
 
 if __name__ == '__main__':
