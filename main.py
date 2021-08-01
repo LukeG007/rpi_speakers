@@ -22,7 +22,7 @@ def upload():
 @app.route('/api/play', methods=['POST'])
 def play2():
     filename = dict(request.form)['filename']
-    threading.Thread(target=subprocess.Popen, args=['aplay', filename]]).start()
+    threading.Thread(target=subprocess.Popen, args=['aplay', filename]).start()
 
 
 if __name__ == '__main__':
