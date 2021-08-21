@@ -11,10 +11,10 @@ def upload():
     url = dict(request.form)['url']
     filename = dict(request.form)['filename']
     r = requests.get(url)
-    f = open(filename, 'w+')
+    f = open('songs/' + filename, 'w+')
     f.truncate(0)
     f.close()
-    f = open(filename, 'wb')
+    f = open('songs/' + filename, 'wb')
     f.write(r.content)
     f.close()
     return 'OK'
@@ -22,7 +22,7 @@ def upload():
 @app.route('/api/play', methods=['POST'])
 def play2():
     filename = dict(request.form)['filename']
-    threading.Thread(target=subprocess.Popen, args=[['ffplay', filename]]).start()
+    threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
     return 'OK'
 
 
