@@ -1,5 +1,6 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 import requests
+import os
 import playsound
 import threading
 import subprocess
@@ -24,6 +25,10 @@ def play2():
     filename = dict(request.form)['filename']
     threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
     return 'OK'
+
+@app.route('/')
+def home():
+    return render_template('home.html', songs=os.listdir('songs'))
 
 
 if __name__ == '__main__':
