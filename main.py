@@ -1,7 +1,7 @@
 from flask import Flask, redirect, request, render_template
 import requests
 import os
-import playsound
+import psutil
 import threading
 import json
 import subprocess
@@ -36,6 +36,7 @@ def upload():
 def play2():
     filename = dict(request.form)['filename']
     threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
+    print(psutil.Process().children(recursive=True)[0].pid)
     return 'OK'
 
 @app.route('/')
