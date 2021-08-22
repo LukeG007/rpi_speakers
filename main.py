@@ -12,12 +12,20 @@ app = Flask(__name__)
 def upload():
     url = dict(request.form)['url']
     filename = dict(request.form)['filename']
+    title = dict(request.form)['title']
     r = requests.get(url)
     f = open('songs/' + filename, 'w+')
     f.truncate(0)
     f.close()
     f = open('songs/' + filename, 'wb')
     f.write(r.content)
+    f.close()
+    f = open('song_titles.json', 'r+')
+    json_dir = json.load(f)
+    json_dir['song_titles'][filename] = title
+    json_str = json.dumps(json_dir)
+    f.truncate(0)
+    f.write(json_str)
     f.close()
     return 'OK'
 
