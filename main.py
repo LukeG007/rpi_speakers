@@ -43,8 +43,11 @@ def upload():
 @app.route('/api/play', methods=['POST'])
 def play2():
     filename = dict(request.form)['filename']
-    threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
-    print(dir(psutil.Process().children(recursive=True)[0]))
+    filetype = filename.split('.')[len(filename.split('.')) - 1]
+    if filetype.lower() == 'wav':
+        wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
+        play_obj = wave_obj.play()
+        play_obj.wait_done()
     return 'OK'
 
 @app.route('/api/autoplay')
