@@ -7,8 +7,16 @@
     .paddedarea {
         padding: 20px;
     }
+    .controls {
+        max-width: 95%;
+        position: fixed;
+        top:100vh;
+        transform:translateY(-100%);
+        width:100%;
+        padding-left: 5%;
+    }
 </style>
-<div class="paddingarea">
+<div class="paddedarea">
     <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
             {% for x in songs %}
@@ -26,5 +34,8 @@
             {% endfor %}
         </ul>
     </div>
+</div>
+<div class="controls">
+    <button type="button" class="btn btn-primary">Hello?</button>
 </div>
 {% endblock %}

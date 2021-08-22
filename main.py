@@ -5,6 +5,7 @@ import psutil
 import simpleaudio as sa
 import threading
 import json
+from pydub import AudioSegment
 import subprocess
 
 app = Flask(__name__)
@@ -13,6 +14,8 @@ app = Flask(__name__)
 def upload():
     url = dict(request.form)['url']
     filename = dict(request.form)['filename']
+    filename = filename.lower()
+    filetype = filename.split('.')[len(filename.split('.')) - 1]
     title = dict(request.form)['title']
     r = requests.get(url)
     f = open('songs/' + filename, 'w+')
@@ -21,6 +24,10 @@ def upload():
     f = open('songs/' + filename, 'wb')
     f.write(r.content)
     f.close()
+    if filetype == 'mp3':
+        sound = AudioSegment.from_mp3(filename)
+        sound.export(filename.replace('.mp3', '.wav'), format="wav")
+        filename = filename.replace('.wav', '.mp3')
     f = open('song_titles.json', 'r')
     json_dir = json.load(f)
     json_dir['song_titles'][filename] = title
@@ -44,9 +51,11 @@ def play2():
 def autoplay():
     #threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
     for filename in os.listdir('songs'):
-        wave_obj = sa.WaveObject.from_wave_file(filename)
-        play_obj = wave_obj.play()
-        play_obj.wait_done()
+        filetype = filename.split('.')[len(filename.split('.')) - 1]
+        if filetype.lower() == 'wav':
+            wave_obj = sa.WaveObject.from_wave_file(filename)
+            play_obj = wave_obj.play()
+            play_obj.wait_done()
     return 'OK'
 
 @app.route('/')
