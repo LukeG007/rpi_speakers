@@ -41,7 +41,7 @@ def play2():
     return 'OK'
 
 @app.route('/api/autoplay', methods=['POST'])
-def play2():
+def autoplay():
     #threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
     for filename in os.listdir('songs'):
         wave_obj = sa.WaveObject.from_wave_file(filename)
