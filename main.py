@@ -9,6 +9,31 @@ from pydub import AudioSegment
 import subprocess
 
 app = Flask(__name__)
+audio_requests = []
+audio_playing_object = None
+def play_audio(wave_obj):
+    global audio_playing_object
+    audio_playing_object = wave_obj.play()
+    audio_playing_object.wait_done()
+    del audio_requests[0]
+def audio_sys():
+    global audio_requests
+    global audio_playing_object
+    while True:
+        if len(audio_requests) == 1:
+            filename = audio_requests[0]
+            filetype = filename.split('.')[len(filename.split('.')) - 1]
+            if filetype.lower() == 'wav':
+                wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
+                threading.Thread(target=play_audio, args=[wave_obj]).start()
+        if len(audio_requests) == 2:
+            audio_playing_object.stop()
+            filename = audio_requests[0]
+            filetype = filename.split('.')[len(filename.split('.')) - 1]
+            if filetype.lower() == 'wav':
+                wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
+                threading.Thread(target=play_audio, args=[wave_obj]).start()
+
 
 @app.route('/api/upload', methods=['POST'])
 def upload():
@@ -76,4 +101,5 @@ def play(song):
     return redirect('/')
 
 if __name__ == '__main__':
+    threading.Thread(target=audio_sys).start()
     app.run(host='0.0.0.0', port=80)
