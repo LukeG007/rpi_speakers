@@ -27,7 +27,7 @@ def audio_sys():
                 wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
                 threading.Thread(target=play_audio, args=[wave_obj]).start()
         if len(audio_requests) == 2:
-            audio_playing_object.stop()
+            print(audio_playing_object.stop())
             filename = audio_requests[0]
             filetype = filename.split('.')[len(filename.split('.')) - 1]
             if filetype.lower() == 'wav':
