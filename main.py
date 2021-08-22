@@ -36,7 +36,7 @@ def home():
     print(json_dir['song_titles'])
     for x in json_dir['song_titles']:
         print(x)
-        songs.append(json_dir[x])
+        songs.append(json_dir['song_titles'][x])
 
     return render_template('home.html', songs=songs)
 
