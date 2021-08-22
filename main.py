@@ -25,7 +25,7 @@ def upload():
     f.write(r.content)
     f.close()
     if filetype == 'mp3':
-        sound = AudioSegment.from_mp3(filename)
+        sound = AudioSegment.from_mp3('song/' + filename)
         sound.export(filename.replace('.mp3', '.wav'), format="wav")
         filename = filename.replace('.wav', '.mp3')
     f = open('song_titles.json', 'r')
@@ -53,7 +53,7 @@ def autoplay():
     for filename in os.listdir('songs'):
         filetype = filename.split('.')[len(filename.split('.')) - 1]
         if filetype.lower() == 'wav':
-            wave_obj = sa.WaveObject.from_wave_file(filename)
+            wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
             play_obj = wave_obj.play()
             play_obj.wait_done()
     return 'OK'
