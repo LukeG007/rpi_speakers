@@ -34,6 +34,7 @@ def home():
 def play(song):
     data = {'filename': song}
     requests.post('http://192.168.3.148/api/play', data=data)
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
