@@ -2,6 +2,7 @@ from flask import Flask, redirect, request, render_template
 import requests
 import os
 import psutil
+import simpleaudio as sa
 import threading
 import json
 import subprocess
@@ -36,7 +37,16 @@ def upload():
 def play2():
     filename = dict(request.form)['filename']
     threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
-    print(psutil.Process().children(recursive=True)[0].pid)
+    print(dir(psutil.Process().children(recursive=True)[0]))
+    return 'OK'
+
+@app.route('/api/autoplay', methods=['POST'])
+def play2():
+    #threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
+    for filename in os.listdir('songs'):
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        play_obj.wait_done()
     return 'OK'
 
 @app.route('/')
