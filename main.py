@@ -20,11 +20,14 @@ def upload():
     f = open('songs/' + filename, 'wb')
     f.write(r.content)
     f.close()
-    f = open('song_titles.json', 'r+')
+    f = open('song_titles.json', 'r')
     json_dir = json.load(f)
     json_dir['song_titles'][filename] = title
     json_str = json.dumps(json_dir)
-    f.truncate(0)
+    f.close()
+    os.system('rm song_titles.json')
+    os.system('touch song_titles.json')
+    f = open('song_titles.json', 'w')
     f.write(json_str)
     f.close()
     return 'OK'
