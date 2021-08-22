@@ -47,7 +47,7 @@ def play2():
     print(dir(psutil.Process().children(recursive=True)[0]))
     return 'OK'
 
-@app.route('/api/autoplay', methods=['POST'])
+@app.route('/api/autoplay')
 def autoplay():
     #threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
     for filename in os.listdir('songs'):
