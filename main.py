@@ -3,6 +3,7 @@ import requests
 import os
 import playsound
 import threading
+import json
 import subprocess
 
 app = Flask(__name__)
@@ -28,7 +29,15 @@ def play2():
 
 @app.route('/')
 def home():
-    return render_template('home.html', songs=os.listdir('songs'))
+    songs = []
+    f = open('song_titles.json')
+    json_dir = json.load(f)
+    f.close()
+    print(json_dir)
+    for x in json_dir:
+        songs.append(json_dir[x])
+
+    return render_template('home.html', songs=songs)
 
 @app.route('/play/<string:song>')
 def play(song):
