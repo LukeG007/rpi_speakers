@@ -27,7 +27,7 @@ def upload():
     if filetype == 'mp3':
         sound = AudioSegment.from_mp3('songs/' + filename)
         sound.export('songs/' + filename.replace('.mp3', '.wav'), format="wav")
-        filename = filename.replace('.wav', '.mp3')
+        filename = filename.replace('.mp3', '.wav')
     f = open('song_titles.json', 'r')
     json_dir = json.load(f)
     json_dir['song_titles'][filename] = title
