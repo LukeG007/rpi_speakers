@@ -85,7 +85,7 @@ def playlists():
 
 @app.route('/playlists/<string:playlist>')
 def playlist_view(playlist):
-    playlist = dict(request.form)['playlist']
+    
     f = open('playlists/{}/song_titles.json'.format(playlist))
     json_dir = json.load(f)
     f.close()
