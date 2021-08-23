@@ -71,10 +71,19 @@ def upload():
 def create_playlist():
     form = dict(request.form)
     name = form['name']
+    img_url = form['img_url']
+    img_filename = form['img_filename']
     os.system('mkdir playlists/{}'.format(name))
     os.system('mkdir playlists/{}/songs'.format(name))
+    os.system('mkdir static/playlists/{}')
     os.system('cp song_titles.json playlists/{}/'.format(name))
-
+    r = request.get(img_url)
+    f = open('static/playlists/{}/{}'.format(name, img_filename), 'w+')
+    f.truncate(0)
+    f.close()
+    f = open('static/playlists/{}/{}'.format(name, img_filename), 'wb')
+    f.write(r.content)
+    f.close()
 
 @app.route('/api/play', methods=['POST'])
 def play2():
@@ -94,7 +103,11 @@ def playlists_redirect():
 @app.route('/playlists')
 def playlists():
     all_playlists = os.listdir('playlists')
-    return render_template('playlists.html', playlists=all_playlists)
+    playlists2 = {}
+    for x in all_playlists:
+        image_filename = os.listdir('static/playlists/{}/')[0]
+        playlists2[x] = '/static/playlists/{}/{}'.format(x, image_filename)
+    return render_template('playlists.html', playlists=playlists2)
 
 @app.route('/playlists/<string:playlist>')
 def playlist_view(playlist):
