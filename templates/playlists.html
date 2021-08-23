@@ -14,7 +14,7 @@
 </div>
 <ul>
     {% for playlist in playlists %}
-    <li>{{ playlist }}</li>
+    <li><a href="/playlists/{{ playlist }}">{{ playlist }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
