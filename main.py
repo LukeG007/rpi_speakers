@@ -98,7 +98,7 @@ def playlist_view(playlist):
         del json_dir['song_titles'][song]
         song = 'playlists/{}/'.format(playlist) + song
         json_dir['song_titles'][song] = title
-    return render_template('songs.html', songs=json_dir['song_titles'])
+    return render_template('songs.html', songs=json_dir['song_titles'], playlist=playlist)
 
 @app.route('/api/autoplay', methods=['POST'])
 def autoplay():
