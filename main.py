@@ -78,6 +78,10 @@ def play2():
         play_obj.wait_done()
     return 'OK'
 
+@app.route('/')
+def playlists_redirect():
+    return redirect('/playlists')
+
 @app.route('/playlists')
 def playlists():
     all_playlists = os.listdir('playlists')
@@ -94,7 +98,7 @@ def playlist_view(playlist):
         del json_dir['song_titles'][song]
         song = 'playlists/{}/'.format(playlist) + song
         json_dir['song_titles'][song] = title
-    return render_template('home.html', songs=json_dir['song_titles'])
+    return render_template('songs.html', songs=json_dir['song_titles'])
 
 @app.route('/api/autoplay', methods=['POST'])
 def autoplay():
