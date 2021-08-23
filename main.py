@@ -85,12 +85,12 @@ def playlists():
 
 @app.route('/playlists/<string:playlist>')
 def playlist_view(playlist):
-    
     f = open('playlists/{}/song_titles.json'.format(playlist))
     json_dir = json.load(f)
     f.close()
     for song in json_dir:
         title = json_dir[song]
+        print(song)
         del json_dir['song_titles'][song]
         song = 'playlists/{}/'.format(playlist) + song
         json_dir['song_titles'][song] = title
