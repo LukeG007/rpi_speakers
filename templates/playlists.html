@@ -4,6 +4,9 @@
     .padded {
         padding: 15px;
     }
+    .card {
+        display: block;
+    }
 </style>
 <div class="padded">
     <nav aria-label="breadcrumb">
@@ -14,7 +17,13 @@
 </div>
 <ul>
     {% for playlist in playlists %}
-    <li><a href="/playlists/{{ playlist }}">{{ playlist }}</a></li>
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ playlist }}</h5>
+          <a href="#" class="btn btn-primary">Songs</a>
+        </div>
+      </div>
     {% endfor %}
 </ul>
 {% endblock %}

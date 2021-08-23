@@ -67,6 +67,15 @@ def upload():
     f.close()
     return 'OK'
 
+@app.route('/api/create_playlist', methods=['POST'])
+def create_playlist():
+    form = dict(request.form)
+    name = form['name']
+    os.system('mkdir playlists/{}'.format(name))
+    os.system('mkdir playlists/{}/songs'.format(name))
+    os.system('cp song_titles.json playlists/{}/'.format(name))
+
+
 @app.route('/api/play', methods=['POST'])
 def play2():
     filename = dict(request.form)['filename']
