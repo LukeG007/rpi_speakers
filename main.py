@@ -40,28 +40,29 @@ def audio_sys():
 def upload():
     url = dict(request.form)['url']
     filename = dict(request.form)['filename']
+    playlist = dict(request.form)['playlist']
     filename = filename.lower()
     filetype = filename.split('.')[len(filename.split('.')) - 1]
     title = dict(request.form)['title']
     r = requests.get(url)
-    f = open('songs/' + filename, 'w+')
+    f = open('playlists/{}/songs/'.format(playlist) + filename, 'w+')
     f.truncate(0)
     f.close()
-    f = open('songs/' + filename, 'wb')
+    f = open('playlists/{}/songs/'.format(playlist) + filename, 'wb')
     f.write(r.content)
     f.close()
     if filetype == 'mp3':
         sound = AudioSegment.from_mp3('songs/' + filename)
-        sound.export('songs/' + filename.replace('.mp3', '.wav'), format="wav")
+        sound.export('playlists/{}/songs/'.format(playlist) + filename.replace('.mp3', '.wav'), format="wav")
         filename = filename.replace('.mp3', '.wav')
     f = open('song_titles.json', 'r')
     json_dir = json.load(f)
     json_dir['song_titles'][filename] = title
     json_str = json.dumps(json_dir)
     f.close()
-    os.system('rm song_titles.json')
-    os.system('touch song_titles.json')
-    f = open('song_titles.json', 'w')
+    os.system('rm playlists/{}/song_titles.json'.format(playlist))
+    os.system('touch playlists/{}/song_titles.json'.format(playlist))
+    f = open('playlists/{}/song_titles.json'.format(playlist), 'w')
     f.write(json_str)
     f.close()
     return 'OK'
@@ -69,31 +70,42 @@ def upload():
 @app.route('/api/play', methods=['POST'])
 def play2():
     filename = dict(request.form)['filename']
+    playlist = dict(request.form)['playlist']
     filetype = filename.split('.')[len(filename.split('.')) - 1]
     if filetype.lower() == 'wav':
-        wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
+        wave_obj = sa.WaveObject.from_wave_file('playlists/{}/songs/'.format(playlist) + filename)
         play_obj = wave_obj.play()
         play_obj.wait_done()
     return 'OK'
 
-@app.route('/api/autoplay')
+@app.route('/playlists')
+def playlists():
+    all_playlists = os.listdir('playlists')
+    return render_template('playlists.html', playlists=all_playlists)
+
+@app.route('/playlists/<string:playlist>')
+def playlist_view(playlist):
+    playlist = dict(request.form)['playlist']
+    f = open('playlists/{}/song_titles.json'.format(playlist))
+    json_dir = json.load(f)
+    f.close()
+    for song in json_dir:
+        title = json_dir[song]
+        del json_dir['song_titles'][song]
+        song = 'playlists/{}/'.format(playlist) + song
+        json_dir['song_titles'][song] = title
+    return render_template('home.html', songs=json_dir['song_titles'])
+
+@app.route('/api/autoplay', methods=['POST'])
 def autoplay():
-    #threading.Thread(target=subprocess.Popen, args=[['ffplay', 'songs/' + filename]]).start()
-    for filename in os.listdir('songs'):
+    playlist = dict(request.form)['playlist']
+    for filename in os.listdir('playlists/{}/songs'.format(playlist)):
         filetype = filename.split('.')[len(filename.split('.')) - 1]
         if filetype.lower() == 'wav':
-            wave_obj = sa.WaveObject.from_wave_file('songs/' + filename)
+            wave_obj = sa.WaveObject.from_wave_file('playlists/{}/songs/'.format(playlist) + filename)
             play_obj = wave_obj.play()
             play_obj.wait_done()
     return 'OK'
-
-@app.route('/')
-def home():
-    songs = []
-    f = open('song_titles.json')
-    json_dir = json.load(f)
-    f.close()
-    return render_template('home.html', songs=json_dir['song_titles'])
 
 @app.route('/play/<string:song>')
 def play(song):

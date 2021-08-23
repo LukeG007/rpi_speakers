@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .padded {
+        padding: 15px;
+    }
+</style>
+<div class="padded">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Playlists</li>
+        </ol>
+    </nav>
+</div>
+<ul>
+    {% for playlist in playlists %}
+    <li>{{ playlist }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

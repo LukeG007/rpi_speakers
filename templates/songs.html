@@ -14,7 +14,18 @@
         padding-bottom: 50px;
         text-align: center;
     }
+    .padded {
+        padding: 15px;
+    }
 </style>
+<div class="padded">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/playlists">Playlists</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ playlist }}</li>
+        </ol>
+    </nav>
+</div>
 <div class="paddedarea">
     <div class="card" style="width: 100%;">
         <ul class="list-group list-group-flush">
