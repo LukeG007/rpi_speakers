@@ -19,7 +19,7 @@
 <ul>
     {% for playlist in playlists %}
     <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="{{ playlists[playlist] }}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{ playlist }}</h5>
           <a href="#" class="btn btn-primary">Songs</a>
