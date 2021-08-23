@@ -105,7 +105,7 @@ def playlists():
     all_playlists = os.listdir('playlists')
     playlists2 = {}
     for x in all_playlists:
-        image_filename = os.listdir('static/playlists/{}/')[0]
+        image_filename = os.listdir('static/playlists/{}/'.format(x))[0]
         playlists2[x] = '/static/playlists/{}/{}'.format(x, image_filename)
     return render_template('playlists.html', playlists=playlists2)
 
