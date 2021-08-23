@@ -75,9 +75,9 @@ def create_playlist():
     img_filename = form['img_filename']
     os.system('mkdir playlists/{}'.format(name))
     os.system('mkdir playlists/{}/songs'.format(name))
-    os.system('mkdir static/playlists/{}')
+    os.system('mkdir static/playlists/{}'.format(name))
     os.system('cp song_titles.json playlists/{}/'.format(name))
-    r = request.get(img_url)
+    r = requests.get(img_url)
     f = open('static/playlists/{}/{}'.format(name, img_filename), 'w+')
     f.truncate(0)
     f.close()
