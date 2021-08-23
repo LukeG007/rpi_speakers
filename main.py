@@ -92,9 +92,10 @@ def playlist_view(playlist):
     f = open('playlists/{}/song_titles.json'.format(playlist))
     json_dir = json.load(f)
     f.close()
+    print(json_dir)
     for song in json_dir['song_titles']:
         title = json_dir['song_titles'][song]
-        print(song)
+        print(song, title)
         del json_dir['song_titles'][song]
         song = 'playlists/{}/'.format(playlist) + song
         json_dir['song_titles'][song] = title
