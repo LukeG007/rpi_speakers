@@ -98,7 +98,7 @@ def play2():
 
 @app.route('/')
 def playlists_redirect():
-    return redirect('/playlists')
+    return render_template('home.html')
 
 @app.route('/playlists')
 def playlists():
